@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>DroidScript Exit Dialog Studio</title>
+
+    <!-- Icon Libraries for Web Preview -->
+    <link rel="stylesheet" href="assets/css/remixicon.css" />
+    <link rel="stylesheet" href="assets/css/all.min.css" />
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+  <body>
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="logo-wrapper">
+        <i class="ri-android-fill logo-icon"></i>
+        <h1 class="logo-text">Exit Dialog Studio</h1>
+      </div>
+      <div class="header-actions">
+        <button type="button" id="btn-copy" class="btn btn-primary">
+          <i class="ri-file-copy-line"></i>
+          <span>Copy Code</span>
+        </button>
+        <button type="button" id="btn-reset" class="btn btn-secondary">
+          <i class="ri-refresh-line"></i>
+          <span>Reset</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Responsive Layout Grid -->
+    <main class="app-layout">
+      <!-- Controls Column -->
+      <section class="controls-panel">
+        <!-- 1. Header Graphic / Icon -->
+        <div class="panel-card">
+          <h2 class="card-heading">
+            <i class="ri-image-edit-line"></i> Header Graphic / Icon
+          </h2>
+
+          <div class="input-control">
+            <label for="icon-source">Icon Source Type</label>
+            <select id="icon-source" class="form-select">
+              <option value="fontawesome" selected>
+                FontAwesome (DroidScript Built-in [fa-...])
+              </option>
+              <option value="remixicon">
+                RemixIcon (Searchable JSON / Custom TTF)
+              </option>
+              <option value="image">Custom App Image (Img/app-icon.png)</option>
+              <option value="none">None (Text Only)</option>
+            </select>
+          </div>
+
+          <!-- FontAwesome Selector Panel -->
+          <div id="panel-fontawesome" class="dynamic-group">
+            <div class="responsive-grid">
+              <div class="input-control">
+                <label for="fa-select">Select FontAwesome Icon</label>
+                <select id="fa-select" class="form-select">
+                  <option value="fa-warning" selected>
+                    [fa-warning] / Alert
+                  </option>
+                  <option value="fa-power-off">
+                    [fa-power-off] / Shutdown
+                  </option>
+                  <option value="fa-sign-out">[fa-sign-out] / Exit</option>
+                  <option value="fa-times-circle">
+                    [fa-times-circle] / Close
+                  </option>
+                  <option value="fa-question-circle">
+                    [fa-question-circle] / Prompt
+                  </option>
+                  <option value="fa-trash">[fa-trash] / Delete</option>
+                  <option value="fa-ban">[fa-ban] / Stop</option>
+                  <option value="fa-home">[fa-home] / Home</option>
+                  <option value="custom">Custom tag...</option>
+                </select>
+              </div>
+              <div
+                class="input-control"
+                id="fa-custom-wrap"
+                style="display: none"
+              >
+                <label for="fa-custom-input">Custom FA Tag</label>
+                <input
+                  type="text"
+                  id="fa-custom-input"
+                  placeholder="e.g. fa-skull"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- RemixIcon Search Panel -->
+          <div id="panel-remixicon" class="dynamic-group" style="display: none">
+            <div class="responsive-grid">
+              <div class="input-control search-wrapper">
+                <label for="remix-search">Search RemixIcon Name</label>
+                <div class="search-input-box">
+                  <i class="ri-search-line search-icon"></i>
+                  <input
+                    type="text"
+                    id="remix-search"
+                    value="error-warning-line"
+                    placeholder="e.g. shut-down, alert..."
+                    autocomplete="off"
+                  />
+                </div>
+                <div id="remix-dropdown" class="autocomplete-dropdown"></div>
+              </div>
+              <div class="input-control">
+                <label for="remix-unicode-val">Unicode Point</label>
+                <input
+                  type="text"
+                  id="remix-unicode-val"
+                  value="\uEA4A"
+                  readonly
+                  class="input-readonly"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Image Panel -->
+          <div id="panel-image" class="dynamic-group" style="display: none">
+            <div class="responsive-grid">
+              <div class="input-control">
+                <label for="img-path">Image Path (DroidScript)</label>
+                <input
+                  type="text"
+                  id="img-path"
+                  value="Img/app-icon.png"
+                  spellcheck="false"
+                />
+              </div>
+              <div class="input-control">
+                <label for="img-size"
+                  >Width Fraction (<span id="img-size-val">0.12</span>)</label
+                >
+                <input
+                  type="range"
+                  id="img-size"
+                  min="0.06"
+                  max="0.30"
+                  step="0.01"
+                  value="0.12"
+                  class="range-slider"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Title Label & Typography -->
+          <div class="responsive-grid">
+            <div class="input-control">
+              <label for="title-text">Title Label Text</label>
+              <input type="text" id="title-text" value="TERMINATE?" />
+            </div>
+            <div class="input-control">
+              <label for="title-size">Font Size (sp)</label>
+              <input
+                type="number"
+                id="title-size"
+                min="12"
+                max="36"
+                value="22"
+              />
+            </div>
+          </div>
+
+          <div class="input-control">
+            <label for="title-color">Title Color</label>
+            <div class="color-row">
+              <input type="color" id="title-color" value="#319057" />
+              <input
+                type="text"
+                id="title-color-val"
+                value="#319057"
+                maxlength="7"
+                spellcheck="false"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Background Engine (Linear, Radial, Solid) -->
+        <div class="panel-card">
+          <h2 class="card-heading">
+            <i class="ri-palette-line"></i> Background & Card Theme
+          </h2>
+
+          <div class="responsive-grid">
+            <div class="input-control">
+              <label for="bg-mode">Background Style</label>
+              <select id="bg-mode" class="form-select">
+                <option value="linear" selected>
+                  Linear Gradient (SetBackGradient)
+                </option>
+                <option value="radial">
+                  Radial Gradient (SetBackGradientRadial)
+                </option>
+                <option value="solid">
+                  Solid Background Color (SetBackColor)
+                </option>
+              </select>
+            </div>
+            <div class="input-control" id="flow-control-group">
+              <label for="grad-direction">Gradient Flow</label>
+              <select id="grad-direction" class="form-select">
+                <option value="Top-Bottom" selected>Top-Bottom</option>
+                <option value="Bottom-Top">Bottom-Top</option>
+                <option value="Left-Right">Left-Right</option>
+                <option value="Right-Left">Right-Left</option>
+                <option value="TL-BR">TopLeft to BottomRight (TL-BR)</option>
+                <option value="TR-BL">TopRight to BottomLeft (TR-BL)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="responsive-grid">
+            <div class="input-control">
+              <label for="color-primary" id="lbl-color-primary"
+                >Start / Solid Color</label
+              >
+              <div class="color-row">
+                <input type="color" id="color-primary" value="#19198f" />
+                <input
+                  type="text"
+                  id="color-primary-val"
+                  value="#19198f"
+                  maxlength="7"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+            <div class="input-control" id="sec-color-group">
+              <label for="color-secondary">End Color</label>
+              <div class="color-row">
+                <input type="color" id="color-secondary" value="#2e2e7a" />
+                <input
+                  type="text"
+                  id="color-secondary-val"
+                  value="#2e2e7a"
+                  maxlength="7"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="responsive-grid">
+            <div class="input-control">
+              <label for="card-radius"
+                >Corner Radius (<span id="radius-val">20</span>px)</label
+              >
+              <input
+                type="range"
+                id="card-radius"
+                min="0"
+                max="40"
+                value="20"
+                class="range-slider"
+              />
+            </div>
+            <div class="input-control">
+              <label for="card-width"
+                >Screen Width Scale (<span id="width-val">0.75</span>)</label
+              >
+              <input
+                type="range"
+                id="card-width"
+                min="0.50"
+                max="0.95"
+                step="0.01"
+                value="0.75"
+                class="range-slider"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. DroidScript Options -->
+        <div class="panel-card">
+          <h2 class="card-heading">
+            <i class="ri-cpu-line"></i> DroidScript Engine Options
+          </h2>
+
+          <div class="responsive-grid">
+            <div class="input-control">
+              <label for="exit-type">Exit Severity</label>
+              <select id="exit-type" class="form-select">
+                <option value="standard" selected>
+                  app.Exit() [Graceful Close]
+                </option>
+                <option value="kill">
+                  app.Exit(true) [Force Kill Process]
+                </option>
+              </select>
+            </div>
+            <div class="input-control">
+              <label for="cancel-behavior">Cancel Policy</label>
+              <select id="cancel-behavior" class="form-select">
+                <option value="NoCancel" selected>
+                  NoCancel (Lock to button click)
+                </option>
+                <option value="AutoCancel">
+                  AutoCancel (Dismiss on outside tap)
+                </option>
+                <option value="Default">
+                  Default (Allow back key dismiss)
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="checkbox-list">
+            <label class="check-item">
+              <input type="checkbox" id="chk-nodim" />
+              <span>NoDim (Disable darkened screen backdrop)</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" id="chk-webview" checked />
+              <span>Include WebView history back-check</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 4. Body Content -->
+        <div class="panel-card">
+          <h2 class="card-heading">
+            <i class="ri-chat-3-line"></i> Body Message
+          </h2>
+
+          <div class="input-control">
+            <label for="msg-text">Prompt Text</label>
+            <textarea id="msg-text" rows="2">
+Connection will be severed. Do you want to close this instance?</textarea
+            >
+          </div>
+
+          <div class="responsive-grid">
+            <div class="input-control">
+              <label for="msg-color">Message Color</label>
+              <div class="color-row">
+                <input type="color" id="msg-color" value="#ffffff" />
+                <input
+                  type="text"
+                  id="msg-color-val"
+                  value="#ffffff"
+                  maxlength="7"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+            <div class="input-control">
+              <label for="msg-size">Font Size (sp)</label>
+              <input type="number" id="msg-size" min="10" max="24" value="14" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Action Buttons -->
+        <div class="panel-card">
+          <h2 class="card-heading">
+            <i class="ri-toggle-line"></i> Button Configuration
+          </h2>
+
+          <div class="responsive-grid">
+            <div class="input-control">
+              <label for="btn-abort-text">Cancel Label</label>
+              <input type="text" id="btn-abort-text" value="ABORT" />
+            </div>
+            <div class="input-control">
+              <label for="btn-confirm-text">Confirm Label</label>
+              <input type="text" id="btn-confirm-text" value="CONFIRM" />
+            </div>
+          </div>
+
+          <div class="responsive-grid">
+            <div class="input-control">
+              <label for="btn-abort-bg">Cancel BG Color</label>
+              <div class="color-row">
+                <input type="color" id="btn-abort-bg" value="#2a2a3c" />
+                <input
+                  type="text"
+                  id="btn-abort-bg-val"
+                  value="#2a2a3c"
+                  maxlength="7"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+            <div class="input-control">
+              <label for="btn-confirm-bg">Confirm BG Color</label>
+              <div class="color-row">
+                <input type="color" id="btn-confirm-bg" value="#f38ba8" />
+                <input
+                  type="text"
+                  id="btn-confirm-bg-val"
+                  value="#f38ba8"
+                  maxlength="7"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="responsive-grid">
+            <div class="input-control">
+              <label for="btn-abort-color">Cancel Text Color</label>
+              <div class="color-row">
+                <input type="color" id="btn-abort-color" value="#89b4fa" />
+                <input
+                  type="text"
+                  id="btn-abort-color-val"
+                  value="#89b4fa"
+                  maxlength="7"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+            <div class="input-control">
+              <label for="btn-confirm-color">Confirm Text Color</label>
+              <div class="color-row">
+                <input type="color" id="btn-confirm-color" value="#11111b" />
+                <input
+                  type="text"
+                  id="btn-confirm-color-val"
+                  value="#11111b"
+                  maxlength="7"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview & Code Output Column -->
+      <section class="output-panel">
+        <!-- Live Mobile Viewport -->
+        <div class="display-box">
+          <div class="box-header">
+            <span
+              ><i class="ri-smartphone-line"></i> Native Android Viewport</span
+            >
+          </div>
+          <div class="screen-canvas" id="preview-canvas">
+            <div class="ds-dialog" id="live-dialog">
+              <div class="ds-dialog-title" id="live-title-row">
+                <span id="live-graphic-slot">
+                  <i class="fa-solid fa-triangle-exclamation icon-slot"></i>
+                </span>
+                <span id="live-title-text">TERMINATE?</span>
+              </div>
+              <p class="ds-dialog-msg" id="live-msg-text">
+                Connection will be severed. Do you want to close this instance?
+              </p>
+              <div class="ds-dialog-actions">
+                <button type="button" class="ds-dialog-btn" id="live-btn-abort">
+                  ABORT
+                </button>
+                <button
+                  type="button"
+                  class="ds-dialog-btn"
+                  id="live-btn-confirm"
+                >
+                  CONFIRM
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generated DroidScript Code Output -->
+        <div class="code-box">
+          <div class="box-header">
+            <span
+              ><i class="ri-code-s-slash-line"></i> DroidScript Source
+              Code</span
+            >
+            <span id="copy-status" class="status-msg"></span>
+          </div>
+          <pre class="code-container"><code id="code-output"></code></pre>
+        </div>
+      </section>
+    </main>
+
+    <!-- External Script -->
+    <script src="assets/js/main.js" defer></script>
+  </body>
+</html>
