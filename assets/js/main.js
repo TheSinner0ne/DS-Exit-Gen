@@ -1,6 +1,6 @@
 /**
  * DroidScript Exit Dialog Studio Engine
- * Fixes FontAwesome option parameter and generates verified DroidScript code.
+ * Uses XMLHttpRequest for local file compatibility and verified DroidScript API bindings.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnReset = document.getElementById("btn-reset");
   const copyStatus = document.getElementById("copy-status");
 
-  // In-memory RemixIcon database
+  // In-memory RemixIcon fallback dictionary
   let remixIconMap = {
     "ri-error-warning-line": "\\uEA4A",
     "error-warning-line": "\\uEA4A",
@@ -98,21 +98,35 @@ document.addEventListener("DOMContentLoaded", () => {
     "ri-question-line": "\\uF042",
     "question-line": "\\uF042",
     "ri-delete-bin-line": "\\uEC1E",
-    "delete-bin-line": "\\uEC1E",
+    "delete-bin-line": "\\uEC1E"
   };
 
-  // Asynchronously load custom JSON if available
-  fetch("assets/data/remixicon-unicode.json")
-    .then((res) => {
-      if (!res.ok) throw new Error("JSON file not found");
-      return res.json();
-    })
-    .then((data) => {
-      remixIconMap = { ...remixIconMap, ...data };
-    })
-    .catch(() => {
-      // Retain fallback defaults
-    });
+  // Load external JSON via XMLHttpRequest (Works with http://, https://, and file:///)
+  function loadIconDatabase() {
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "assets/data/remixicon-unicode.json", true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          // Status 200 (HTTP OK) or Status 0 (Local file:// read success)
+          if (xhr.status === 200 || (xhr.status === 0 && xhr.responseText)) {
+            try {
+              const data = JSON.parse(xhr.responseText);
+              remixIconMap = Object.assign({}, remixIconMap, data);
+              updateGenerator();
+            } catch (err) {
+              // Retain in-memory fallback
+            }
+          }
+        }
+      };
+      xhr.send(null);
+    } catch (e) {
+      // Retain in-memory fallback
+    }
+  }
+
+  loadIconDatabase();
 
   // Color sync helper
   function bindColorPair(picker, textInput) {
@@ -241,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnConfirmText,
     faCustomInput,
     imgPath,
-    imgSize,
+    imgSize
   ];
 
   allControls.forEach((ctrl) => {
@@ -299,7 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ? faCustomInput.value.trim()
           : faSelect.value;
       if (!faTag.startsWith("fa-")) faTag = `fa-${faTag}`;
-      // Map legacy names for preview
+      // Map legacy aliases for web preview
       if (faTag === "fa-warning") faTag = "fa-triangle-exclamation";
       if (faTag === "fa-sign-out") faTag = "fa-right-from-bracket";
       liveGraphicSlot.innerHTML = `<i class="fa-solid ${faTag} icon-slot"></i>`;
@@ -363,7 +377,6 @@ document.addEventListener("DOMContentLoaded", () => {
           : faSelect.value;
       if (!faTag.startsWith("fa-")) faTag = `fa-${faTag}`;
 
-      // CRITICAL FIX: "FontAwesome" must be included in options parameter
       headerCodeSnippet = `    // FontAwesome icon rendered via DroidScript built-in "FontAwesome" option
     var txtTitle = app.CreateText("[${faTag}]  ${cleanTitle}", ${cardWidth.value}, -1, "FontAwesome,Left,Bold");
     txtTitle.SetTextColor("${titleColor.value}");
